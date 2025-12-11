@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity 1: Vocabulary Matching</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .vocab-item {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .vocab-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2);
+        }
+
+        .vocab-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 1.1rem;
+        }
+
+        .vocab-label .letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #667eea;
+            color: white;
+            border-radius: 8px;
+            margin-right: 12px;
+            font-weight: 700;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="text"].correct {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        input[type="text"].incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .reset-btn {
+            background: #f3f4f6;
+            color: #1a1a2e;
+        }
+
+        .reset-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .show-btn {
+            background: #fbbf24;
+            color: #1a1a2e;
+        }
+
+        .show-btn:hover {
+            background: #f59e0b;
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .result.partial {
+            background: #fed7aa;
+            color: #92400e;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .vocab-item {
+            animation: slideIn 0.5s ease forwards;
+            animation-delay: calc(var(--index) * 0.1s);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Activity 1</h1>
+        <p class="subtitle">Find the English words that match these Spanish terms</p>
+        
+        <div class="vocab-item" style="--index: 0">
+            <div class="vocab-label">
+                <span class="letter">a</span>
+                <span>Reportar a:</span>
+            </div>
+            <input type="text" id="answer-a" placeholder="Type the English term...">
+        </div>
+
+        <div class="vocab-item" style="--index: 1">
+            <div class="vocab-label">
+                <span class="letter">b</span>
+                <span>Jerarquía:</span>
+            </div>
+            <input type="text" id="answer-b" placeholder="Type the English term...">
+        </div>
+
+        <div class="vocab-item" style="--index: 2">
+            <div class="vocab-label">
+                <span class="letter">c</span>
+                <span>Propietarios:</span>
+            </div>
+            <input type="text" id="answer-c" placeholder="Type the English term...">
+        </div>
+
+        <div class="vocab-item" style="--index: 3">
+            <div class="vocab-label">
+                <span class="letter">d</span>
+                <span>Deudas:</span>
+            </div>
+            <input type="text" id="answer-d" placeholder="Type the English term...">
+        </div>
+
+        <div class="vocab-item" style="--index: 4">
+            <div class="vocab-label">
+                <span class="letter">e</span>
+                <span>Acciones:</span>
+            </div>
+            <input type="text" id="answer-e" placeholder="Type the English term...">
+        </div>
+
+        <div class="vocab-item" style="--index: 5">
+            <div class="vocab-label">
+                <span class="letter">f</span>
+                <span>Mercado de valores:</span>
+            </div>
+            <input type="text" id="answer-f" placeholder="Type the English term...">
+        </div>
+
+        <div class="vocab-item" style="--index: 6">
+            <div class="vocab-label">
+                <span class="letter">g</span>
+                <span>Conjuntamente:</span>
+            </div>
+            <input type="text" id="answer-g" placeholder="Type the English term...">
+        </div>
+
+        <div class="vocab-item" style="--index: 7">
+            <div class="vocab-label">
+                <span class="letter">h</span>
+                <span>Proporciona:</span>
+            </div>
+            <input type="text" id="answer-h" placeholder="Type the English term...">
+        </div>
+
+        <div class="buttons">
+            <button class="check-btn" onclick="checkAnswers()">Check Answers</button>
+            <button class="show-btn" onclick="showAnswers()">Show Answers</button>
+            <button class="reset-btn" onclick="resetForm()">Reset</button>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            'a': 'report to',
+            'b': 'hierarchy',
+            'c': 'owners',
+            'd': 'debts',
+            'e': 'shares',
+            'f': 'stock market',
+            'g': 'jointly',
+            'h': 'provides'
+        };
+
+        function normalizeAnswer(answer) {
+            return answer.toLowerCase().trim();
+        }
+
+        function checkAnswers() {
+            let correct = 0;
+            let total = Object.keys(correctAnswers).length;
+
+            Object.keys(correctAnswers).forEach(key => {
+                const input = document.getElementById(`answer-${key}`);
+                const userAnswer = normalizeAnswer(input.value);
+                const correctAnswer = normalizeAnswer(correctAnswers[key]);
+
+                if (userAnswer === correctAnswer) {
+                    input.classList.remove('incorrect');
+                    input.classList.add('correct');
+                    correct++;
+                } else if (userAnswer === '') {
+                    input.classList.remove('correct', 'incorrect');
+                } else {
+                    input.classList.remove('correct');
+                    input.classList.add('incorrect');
+                }
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.add('show');
+
+            if (correct === total) {
+                resultDiv.className = 'result show success';
+                resultDiv.textContent = `🎉 Perfect! You got all ${total} answers correct!`;
+            } else {
+                resultDiv.className = 'result show partial';
+                resultDiv.textContent = `You got ${correct} out of ${total} correct. Keep trying!`;
+            }
+        }
+
+        function showAnswers() {
+            Object.keys(correctAnswers).forEach(key => {
+                const input = document.getElementById(`answer-${key}`);
+                input.value = correctAnswers[key];
+                input.classList.add('correct');
+                input.classList.remove('incorrect');
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result show success';
+            resultDiv.textContent = '✨ Answers revealed!';
+            resultDiv.classList.add('show');
+        }
+
+        function resetForm() {
+            Object.keys(correctAnswers).forEach(key => {
+                const input = document.getElementById(`answer-${key}`);
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.remove('show');
+        }
+
+        // Allow Enter key to check answers
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswers();
+            }
+        });
+    </script>
+</body>
+</html>

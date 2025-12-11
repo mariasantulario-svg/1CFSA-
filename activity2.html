@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity 2: Match Business Types</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(to bottom right, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 28px;
+            padding: 3rem;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #533483;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+            font-size: 1.15rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        thead {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            color: white;
+        }
+
+        th {
+            padding: 1.25rem 1rem;
+            font-weight: 600;
+            text-align: center;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        th:first-child {
+            text-align: left;
+            padding-left: 1.5rem;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+        }
+
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid #e9ecef;
+            text-align: center;
+        }
+
+        td:first-child {
+            text-align: left;
+            padding-left: 1.5rem;
+            font-weight: 500;
+            color: #1a1a2e;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .checkbox-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border: 2.5px solid #cbd5e0;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="checkbox"]:hover {
+            border-color: #0f3460;
+            transform: scale(1.1);
+        }
+
+        input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            border-color: #0f3460;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        input[type="checkbox"].correct {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: #059669;
+            animation: pulse 0.5s ease;
+        }
+
+        input[type="checkbox"].incorrect {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-color: #dc2626;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 150px;
+            padding: 16px 28px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            color: white;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(15, 52, 96, 0.3);
+        }
+
+        .reset-btn {
+            background: #e9ecef;
+            color: #1a1a2e;
+        }
+
+        .reset-btn:hover {
+            background: #dee2e6;
+        }
+
+        .show-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .show-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 1.75rem;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.15rem;
+            display: none;
+            border: 2px solid;
+        }
+
+        .result.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        .result.success {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border-color: #10b981;
+        }
+
+        .result.partial {
+            background: linear-gradient(135deg, #fed7aa, #fde68a);
+            color: #92400e;
+            border-color: #f59e0b;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            th, td {
+                padding: 0.875rem 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            button {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Activity 2</h1>
+        <p class="subtitle">Match each description to the correct business type</p>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Sole trader</th>
+                        <th>Partnership</th>
+                        <th>Firm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. Two or more individuals jointly own and operate a business.</td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="1" data-col="sole"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="1" data-col="partnership"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="1" data-col="firm"></div></td>
+                    </tr>
+                    <tr>
+                        <td>2. A business operated by one person who owns and manages everything.</td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="2" data-col="sole"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="2" data-col="partnership"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="2" data-col="firm"></div></td>
+                    </tr>
+                    <tr>
+                        <td>3. Responsibilities, profits, and decision-making are shared by two or more individuals.</td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="3" data-col="sole"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="3" data-col="partnership"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="3" data-col="firm"></div></td>
+                    </tr>
+                    <tr>
+                        <td>4. A company that provides professional services, often run by multiple partners who are experts in their field.</td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="4" data-col="sole"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="4" data-col="partnership"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="4" data-col="firm"></div></td>
+                    </tr>
+                    <tr>
+                        <td>5. A business where a person makes all decisions and keeps all profits, but is also personally responsible for all debts.</td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="5" data-col="sole"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="5" data-col="partnership"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="5" data-col="firm"></div></td>
+                    </tr>
+                    <tr>
+                        <td>6. A company that has got associates and support staff below the partners.</td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="6" data-col="sole"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="6" data-col="partnership"></div></td>
+                        <td><div class="checkbox-wrapper"><input type="checkbox" data-row="6" data-col="firm"></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="buttons">
+            <button class="check-btn" onclick="checkAnswers()">Check Answers</button>
+            <button class="show-btn" onclick="showAnswers()">Show Answers</button>
+            <button class="reset-btn" onclick="resetForm()">Reset</button>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            '1': 'partnership',
+            '2': 'sole',
+            '3': 'partnership',
+            '4': 'firm',
+            '5': 'sole',
+            '6': 'firm'
+        };
+
+        // Only allow one checkbox per row
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    const row = this.dataset.row;
+                    document.querySelectorAll(`input[data-row="${row}"]`).forEach(cb => {
+                        if (cb !== this) {
+                            cb.checked = false;
+                            cb.classList.remove('correct', 'incorrect');
+                        }
+                    });
+                }
+                this.classList.remove('correct', 'incorrect');
+            });
+        });
+
+        function checkAnswers() {
+            let correct = 0;
+            let total = Object.keys(correctAnswers).length;
+
+            Object.keys(correctAnswers).forEach(row => {
+                const correctCol = correctAnswers[row];
+                const checkboxes = document.querySelectorAll(`input[data-row="${row}"]`);
+                
+                checkboxes.forEach(checkbox => {
+                    const col = checkbox.dataset.col;
+                    
+                    if (checkbox.checked) {
+                        if (col === correctCol) {
+                            checkbox.classList.add('correct');
+                            checkbox.classList.remove('incorrect');
+                            correct++;
+                        } else {
+                            checkbox.classList.add('incorrect');
+                            checkbox.classList.remove('correct');
+                        }
+                    } else {
+                        checkbox.classList.remove('correct', 'incorrect');
+                    }
+                });
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.add('show');
+
+            if (correct === total) {
+                resultDiv.className = 'result show success';
+                resultDiv.textContent = `🎉 Excellent! All ${total} answers are correct!`;
+            } else {
+                resultDiv.className = 'result show partial';
+                resultDiv.textContent = `You got ${correct} out of ${total} correct. Review and try again!`;
+            }
+        }
+
+        function showAnswers() {
+            // First uncheck everything
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+                cb.classList.remove('incorrect');
+            });
+
+            // Then check correct answers
+            Object.keys(correctAnswers).forEach(row => {
+                const correctCol = correctAnswers[row];
+                const correctCheckbox = document.querySelector(`input[data-row="${row}"][data-col="${correctCol}"]`);
+                correctCheckbox.checked = true;
+                correctCheckbox.classList.add('correct');
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result show success';
+            resultDiv.textContent = '✨ Correct answers revealed!';
+            resultDiv.classList.add('show');
+        }
+
+        function resetForm() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.classList.remove('correct', 'incorrect');
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.remove('show');
+        }
+    </script>
+</body>
+</html>

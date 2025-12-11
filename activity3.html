@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity 3: Company Structure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fa8c16 0%, #ad4e00 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: #fffbf5;
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            border: 3px solid #fa8c16;
+        }
+
+        h1 {
+            font-family: 'Lora', serif;
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: #ad4e00;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #fa8c16;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .word-bank {
+            background: linear-gradient(135deg, #fff7e6, #ffe7ba);
+            border: 2px dashed #fa8c16;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .word-bank-title {
+            font-weight: 700;
+            color: #ad4e00;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .word-bank-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .word-tag {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #ad4e00;
+            border: 2px solid #fa8c16;
+            font-size: 0.95rem;
+        }
+
+        .sentence-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            border-left: 4px solid #fa8c16;
+            transition: all 0.3s ease;
+        }
+
+        .sentence-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(250, 140, 22, 0.2);
+        }
+
+        .sentence-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: #fa8c16;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 700;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .sentence-text {
+            display: inline;
+            line-height: 2.2;
+            font-size: 1.05rem;
+            color: #2c2c2c;
+        }
+
+        select {
+            display: inline-block;
+            padding: 6px 12px;
+            border: 2px solid #fa8c16;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            background: white;
+            color: #ad4e00;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+            margin: 0 4px;
+        }
+
+        select:hover {
+            background: #fff7e6;
+            transform: translateY(-1px);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #ad4e00;
+            box-shadow: 0 0 0 3px rgba(250, 140, 22, 0.2);
+        }
+
+        select.correct {
+            border-color: #52c41a;
+            background: #f6ffed;
+            color: #389e0d;
+        }
+
+        select.incorrect {
+            border-color: #ff4d4f;
+            background: #fff1f0;
+            color: #cf1322;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #fa8c16, #ad4e00);
+            color: white;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(250, 140, 22, 0.4);
+        }
+
+        .reset-btn {
+            background: #f5f5f5;
+            color: #2c2c2c;
+        }
+
+        .reset-btn:hover {
+            background: #e8e8e8;
+        }
+
+        .show-btn {
+            background: #52c41a;
+            color: white;
+        }
+
+        .show-btn:hover {
+            background: #389e0d;
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result.success {
+            background: #f6ffed;
+            color: #389e0d;
+            border: 2px solid #52c41a;
+        }
+
+        .result.partial {
+            background: #fff7e6;
+            color: #ad6800;
+            border: 2px solid #fa8c16;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            select {
+                min-width: 120px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Activity 3</h1>
+        <p class="subtitle">Complete the sentences with the correct word or expression</p>
+        
+        <div class="word-bank">
+            <div class="word-bank-title">📚 Word Bank (each term used only once)</div>
+            <div class="word-bank-items">
+                <span class="word-tag">head office</span>
+                <span class="word-tag">branches</span>
+                <span class="word-tag">department</span>
+                <span class="word-tag">hierarchy</span>
+                <span class="word-tag">report to</span>
+                <span class="word-tag">oversee</span>
+                <span class="word-tag">in charge of</span>
+                <span class="word-tag">liaise with</span>
+            </div>
+        </div>
+
+        <div class="sentence-item">
+            <span class="sentence-number">1</span>
+            <span class="sentence-text">
+                The organizational 
+                <select id="q1">
+                    <option value="">Select...</option>
+                    <option value="hierarchy">hierarchy</option>
+                    <option value="head office">head office</option>
+                    <option value="branches">branches</option>
+                    <option value="department">department</option>
+                    <option value="report to">report to</option>
+                    <option value="oversee">oversee</option>
+                    <option value="in charge of">in charge of</option>
+                    <option value="liaise with">liaise with</option>
+                </select>
+                shows who has more or less authority.
+            </span>
+        </div>
+
+        <div class="sentence-item">
+            <span class="sentence-number">2</span>
+            <span class="sentence-text">
+                I 
+                <select id="q2">
+                    <option value="">Select...</option>
+                    <option value="hierarchy">hierarchy</option>
+                    <option value="head office">head office</option>
+                    <option value="branches">branches</option>
+                    <option value="department">department</option>
+                    <option value="report to">report to</option>
+                    <option value="oversee">oversee</option>
+                    <option value="in charge of">in charge of</option>
+                    <option value="liaise with">liaise with</option>
+                </select>
+                the Financial Director and send her weekly updates.
+            </span>
+        </div>
+
+        <div class="sentence-item">
+            <span class="sentence-number">3</span>
+            <span class="sentence-text">
+                The company's 
+                <select id="q3">
+                    <option value="">Select...</option>
+                    <option value="hierarchy">hierarchy</option>
+                    <option value="head office">head office</option>
+                    <option value="branches">branches</option>
+                    <option value="department">department</option>
+                    <option value="report to">report to</option>
+                    <option value="oversee">oversee</option>
+                    <option value="in charge of">in charge of</option>
+                    <option value="liaise with">liaise with</option>
+                </select>
+                is in Madrid, where the main executives work.
+            </span>
+        </div>
+
+        <div class="sentence-item">
+            <span class="sentence-number">4</span>
+            <span class="sentence-text">
+                Managers usually 
+                <select id="q4">
+                    <option value="">Select...</option>
+                    <option value="hierarchy">hierarchy</option>
+                    <option value="head office">head office</option>
+                    <option value="branches">branches</option>
+                    <option value="department">department</option>
+                    <option value="report to">report to</option>
+                    <option value="oversee">oversee</option>
+                    <option value="in charge of">in charge of</option>
+                    <option value="liaise with">liaise with</option>
+                </select>
+                several projects at the same time.
+            </span>
+        </div>
+
+        <div class="sentence-item">
+            <span class="sentence-number">5</span>
+            <span class="sentence-text">
+                Laura is 
+                <select id="q5">
+                    <option value="">Select...</option>
+                    <option value="hierarchy">hierarchy</option>
+                    <option value="head office">head office</option>
+                    <option value="branches">branches</option>
+                    <option value="department">department</option>
+                    <option value="report to">report to</option>
+                    <option value="oversee">oversee</option>
+                    <option value="in charge of">in charge of</option>
+                    <option value="liaise with">liaise with</option>
+                </select>
+                customer service, so she manages the support team.
+            </span>
+        </div>
+
+        <div class="sentence-item">
+            <span class="sentence-number">6</span>
+            <span class="sentence-text">
+                Our company has three 
+                <select id="q6">
+                    <option value="">Select...</option>
+                    <option value="hierarchy">hierarchy</option>
+                    <option value="head office">head office</option>
+                    <option value="branches">branches</option>
+                    <option value="department">department</option>
+                    <option value="report to">report to</option>
+                    <option value="oversee">oversee</option>
+                    <option value="in charge of">in charge of</option>
+                    <option value="liaise with">liaise with</option>
+                </select>
+                in different regions of Spain.
+            </span>
+        </div>
+
+        <div class="sentence-item">
+            <span class="sentence-number">7</span>
+            <span class="sentence-text">
+                In this job, we must 
+                <select id="q7">
+                    <option value="">Select...</option>
+                    <option value="hierarchy">hierarchy</option>
+                    <option value="head office">head office</option>
+                    <option value="branches">branches</option>
+                    <option value="department">department</option>
+                    <option value="report to">report to</option>
+                    <option value="oversee">oversee</option>
+                    <option value="in charge of">in charge of</option>
+                    <option value="liaise with">liaise with</option>
+                </select>
+                suppliers to solve delivery problems.
+            </span>
+        </div>
+
+        <div class="sentence-item">
+            <span class="sentence-number">8</span>
+            <span class="sentence-text">
+                I work in the Finance 
+                <select id="q8">
+                    <option value="">Select...</option>
+                    <option value="hierarchy">hierarchy</option>
+                    <option value="head office">head office</option>
+                    <option value="branches">branches</option>
+                    <option value="department">department</option>
+                    <option value="report to">report to</option>
+                    <option value="oversee">oversee</option>
+                    <option value="in charge of">in charge of</option>
+                    <option value="liaise with">liaise with</option>
+                </select>
+                , where we prepare budgets and payroll.
+            </span>
+        </div>
+
+        <div class="buttons">
+            <button class="check-btn" onclick="checkAnswers()">Check Answers</button>
+            <button class="show-btn" onclick="showAnswers()">Show Answers</button>
+            <button class="reset-btn" onclick="resetForm()">Reset</button>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            'q1': 'hierarchy',
+            'q2': 'report to',
+            'q3': 'head office',
+            'q4': 'oversee',
+            'q5': 'in charge of',
+            'q6': 'branches',
+            'q7': 'liaise with',
+            'q8': 'department'
+        };
+
+        function checkAnswers() {
+            let correct = 0;
+            let total = Object.keys(correctAnswers).length;
+
+            Object.keys(correctAnswers).forEach(id => {
+                const select = document.getElementById(id);
+                const userAnswer = select.value;
+                const correctAnswer = correctAnswers[id];
+
+                if (userAnswer === correctAnswer) {
+                    select.classList.remove('incorrect');
+                    select.classList.add('correct');
+                    correct++;
+                } else if (userAnswer === '') {
+                    select.classList.remove('correct', 'incorrect');
+                } else {
+                    select.classList.remove('correct');
+                    select.classList.add('incorrect');
+                }
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.add('show');
+
+            if (correct === total) {
+                resultDiv.className = 'result show success';
+                resultDiv.textContent = `🎉 Perfect score! You got all ${total} answers correct!`;
+            } else {
+                resultDiv.className = 'result show partial';
+                resultDiv.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+            }
+        }
+
+        function showAnswers() {
+            Object.keys(correctAnswers).forEach(id => {
+                const select = document.getElementById(id);
+                select.value = correctAnswers[id];
+                select.classList.add('correct');
+                select.classList.remove('incorrect');
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result show success';
+            resultDiv.textContent = '✨ All correct answers have been revealed!';
+            resultDiv.classList.add('show');
+        }
+
+        function resetForm() {
+            Object.keys(correctAnswers).forEach(id => {
+                const select = document.getElementById(id);
+                select.value = '';
+                select.classList.remove('correct', 'incorrect');
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.remove('show');
+        }
+    </script>
+</body>
+</html>

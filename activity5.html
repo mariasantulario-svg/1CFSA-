@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity 5: Departments Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@600;700;800&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 950px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #134e5e;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #71b280;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+
+        .passage {
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+            border-left: 6px solid #71b280;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            line-height: 1.9;
+            font-size: 1.05rem;
+            color: #2c3e50;
+        }
+
+        .passage .dropdown {
+            display: inline-block;
+            position: relative;
+        }
+
+        .passage select {
+            display: inline-block;
+            padding: 4px 10px;
+            border: 2px solid #71b280;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            font-family: 'Karla', sans-serif;
+            font-weight: 700;
+            background: white;
+            color: #134e5e;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 140px;
+            margin: 0 3px;
+        }
+
+        .passage select:hover {
+            background: #e8f5e9;
+        }
+
+        .passage select:focus {
+            outline: none;
+            border-color: #134e5e;
+            box-shadow: 0 0 0 3px rgba(19, 78, 94, 0.1);
+        }
+
+        .passage select.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .passage select.incorrect {
+            border-color: #ff5252;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .gap-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            background: #71b280;
+            color: white;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 0.85rem;
+            margin-right: 4px;
+            font-family: 'Lexend', sans-serif;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 18px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Lexend', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #134e5e, #71b280);
+            color: white;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(19, 78, 94, 0.3);
+        }
+
+        .reset-btn {
+            background: #eceff1;
+            color: #134e5e;
+        }
+
+        .reset-btn:hover {
+            background: #cfd8dc;
+        }
+
+        .show-btn {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+        }
+
+        .show-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(255, 152, 0, 0.3);
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: none;
+            font-family: 'Lexend', sans-serif;
+        }
+
+        .result.show {
+            display: block;
+            animation: slideIn 0.6s ease;
+        }
+
+        .result.success {
+            background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+            color: #1b5e20;
+            border: 4px solid #4caf50;
+        }
+
+        .result.partial {
+            background: linear-gradient(135deg, #fff9c4, #fff59d);
+            color: #f57f17;
+            border: 4px solid #fbc02d;
+        }
+
+        .result.poor {
+            background: linear-gradient(135deg, #ffccbc, #ffab91);
+            color: #bf360c;
+            border: 4px solid #ff5722;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .passage select {
+                min-width: 120px;
+                font-size: 0.95rem;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Activity 5</h1>
+        <p class="subtitle">Departments and Their Functions</p>
+        
+        <div class="passage">
+            <p style="margin-bottom: 1.5rem;">
+                Companies are usually divided into several 
+                <span class="dropdown">
+                    <span class="gap-number">1</span>
+                    <select id="q1">
+                        <option value="">?</option>
+                        <option value="departments">departments</option>
+                        <option value="contracts">contracts</option>
+                        <option value="suppliers">suppliers</option>
+                    </select>
+                </span>
+                , and each one has specific responsibilities.
+            </p>
+
+            <p style="margin-bottom: 1.5rem;">
+                The Finance or Accounting Department manages the company's money and prepares financial 
+                <span class="dropdown">
+                    <span class="gap-number">2</span>
+                    <select id="q2">
+                        <option value="">?</option>
+                        <option value="reports">reports</option>
+                        <option value="meetings">meetings</option>
+                        <option value="devices">devices</option>
+                    </select>
+                </span>
+                . It also handles 
+                <span class="dropdown">
+                    <span class="gap-number">3</span>
+                    <select id="q3">
+                        <option value="">?</option>
+                        <option value="invoices">invoices</option>
+                        <option value="clients">clients</option>
+                        <option value="advertisements">advertisements</option>
+                    </select>
+                </span>
+                and payments to ensure the company remains profitable.
+            </p>
+
+            <p style="margin-bottom: 1.5rem;">
+                The Sales Department sells products and services, contacts potential clients, and works hard to reach 
+                <span class="dropdown">
+                    <span class="gap-number">4</span>
+                    <select id="q4">
+                        <option value="">?</option>
+                        <option value="sales targets">sales targets</option>
+                        <option value="company rules">company rules</option>
+                        <option value="schedules">schedules</option>
+                    </select>
+                </span>
+                . This department is essential for generating revenue and building strong customer relationships.
+            </p>
+
+            <p style="margin-bottom: 1.5rem;">
+                The Marketing Department promotes the company's products by creating advertising 
+                <span class="dropdown">
+                    <span class="gap-number">5</span>
+                    <select id="q5">
+                        <option value="">?</option>
+                        <option value="campaigns">campaigns</option>
+                        <option value="branches">branches</option>
+                        <option value="salaries">salaries</option>
+                    </select>
+                </span>
+                and doing 
+                <span class="dropdown">
+                    <span class="gap-number">6</span>
+                    <select id="q6">
+                        <option value="">?</option>
+                        <option value="market research">market research</option>
+                        <option value="customer complaints">customer complaints</option>
+                        <option value="employee interviews">employee interviews</option>
+                    </select>
+                </span>
+                . It also manages social media and works to maintain a positive 
+                <span class="dropdown">
+                    <span class="gap-number">7</span>
+                    <select id="q7">
+                        <option value="">?</option>
+                        <option value="brand">brand</option>
+                        <option value="office">office</option>
+                        <option value="project">project</option>
+                    </select>
+                </span>
+                image.
+            </p>
+
+            <p style="margin-bottom: 1.5rem;">
+                Human Resources (HR) focuses on employees. HR hires new staff, organizes 
+                <span class="dropdown">
+                    <span class="gap-number">8</span>
+                    <select id="q8">
+                        <option value="">?</option>
+                        <option value="training">training</option>
+                        <option value="packaging">packaging</option>
+                        <option value="travelling">travelling</option>
+                    </select>
+                </span>
+                programmes, and deals with employee issues and benefits. It also manages 
+                <span class="dropdown">
+                    <span class="gap-number">9</span>
+                    <select id="q9">
+                        <option value="">?</option>
+                        <option value="payroll">payroll</option>
+                        <option value="marketing strategy">marketing strategy</option>
+                        <option value="IT security">IT security</option>
+                    </select>
+                </span>
+                so that everyone is paid correctly and on time.
+            </p>
+
+            <p style="margin-bottom: 1.5rem;">
+                The IT Department provides 
+                <span class="dropdown">
+                    <span class="gap-number">10</span>
+                    <select id="q10">
+                        <option value="">?</option>
+                        <option value="technological">technological</option>
+                        <option value="emotional">emotional</option>
+                        <option value="financial">financial</option>
+                    </select>
+                </span>
+                support to employees. It manages computers and networks, fixes technical issues, and ensures 
+                <span class="dropdown">
+                    <span class="gap-number">11</span>
+                    <select id="q11">
+                        <option value="">?</option>
+                        <option value="data security">data security</option>
+                        <option value="customer service">customer service</option>
+                        <option value="budget planning">budget planning</option>
+                    </select>
+                </span>
+                throughout the company.
+            </p>
+
+            <p>
+                Finally, the Production or Operations Department is responsible for making products or delivering services. They 
+                <span class="dropdown">
+                    <span class="gap-number">12</span>
+                    <select id="q12">
+                        <option value="">?</option>
+                        <option value="supervise">supervise</option>
+                        <option value="celebrate">celebrate</option>
+                        <option value="reduce">reduce</option>
+                    </select>
+                </span>
+                production processes, control quality standards, and ensure efficient 
+                <span class="dropdown">
+                    <span class="gap-number">13</span>
+                    <select id="q13">
+                        <option value="">?</option>
+                        <option value="operations">operations</option>
+                        <option value="hiring">hiring</option>
+                        <option value="social media">social media</option>
+                    </select>
+                </span>
+                throughout the company.
+            </p>
+        </div>
+
+        <div class="buttons">
+            <button class="check-btn" onclick="checkAnswers()">Check Answers</button>
+            <button class="show-btn" onclick="showAnswers()">Show Answers</button>
+            <button class="reset-btn" onclick="resetForm()">Reset</button>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            'q1': 'departments',
+            'q2': 'reports',
+            'q3': 'invoices',
+            'q4': 'sales targets',
+            'q5': 'campaigns',
+            'q6': 'market research',
+            'q7': 'brand',
+            'q8': 'training',
+            'q9': 'payroll',
+            'q10': 'technological',
+            'q11': 'data security',
+            'q12': 'supervise',
+            'q13': 'operations'
+        };
+
+        function checkAnswers() {
+            let correct = 0;
+            let total = Object.keys(correctAnswers).length;
+
+            Object.keys(correctAnswers).forEach(id => {
+                const select = document.getElementById(id);
+                const userAnswer = select.value;
+                const correctAnswer = correctAnswers[id];
+
+                if (userAnswer === correctAnswer) {
+                    select.classList.remove('incorrect');
+                    select.classList.add('correct');
+                    correct++;
+                } else if (userAnswer === '') {
+                    select.classList.remove('correct', 'incorrect');
+                } else {
+                    select.classList.remove('correct');
+                    select.classList.add('incorrect');
+                }
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.add('show');
+
+            const percentage = (correct / total) * 100;
+
+            if (correct === total) {
+                resultDiv.className = 'result show success';
+                resultDiv.textContent = `🏆 PERFECT! ${correct}/${total} - You're a business expert!`;
+            } else if (percentage >= 70) {
+                resultDiv.className = 'result show partial';
+                resultDiv.textContent = `👍 Good job! ${correct}/${total} correct (${Math.round(percentage)}%)`;
+            } else {
+                resultDiv.className = 'result show poor';
+                resultDiv.textContent = `📚 Keep studying! ${correct}/${total} correct (${Math.round(percentage)}%)`;
+            }
+        }
+
+        function showAnswers() {
+            Object.keys(correctAnswers).forEach(id => {
+                const select = document.getElementById(id);
+                select.value = correctAnswers[id];
+                select.classList.add('correct');
+                select.classList.remove('incorrect');
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result show success';
+            resultDiv.textContent = '✅ All correct answers have been revealed!';
+            resultDiv.classList.add('show');
+        }
+
+        function resetForm() {
+            Object.keys(correctAnswers).forEach(id => {
+                const select = document.getElementById(id);
+                select.value = '';
+                select.classList.remove('correct', 'incorrect');
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.remove('show');
+        }
+    </script>
+</body>
+</html>
